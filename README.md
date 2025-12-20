@@ -1,12 +1,27 @@
+# Follow Setup commands in doc  
+https://github.com/Koh-WH/g1_isaacgym/blob/main/doc/setup_en.md  
+  
+# Folder Structure  
+`
+isaacgym_/
+├── isaacgym/                
+├── rsl_rl/   
+├── unitree_rl_gym/              
+├── unitree_sdk2_python/                    
+`
+  
+Can drag xml files in window to view the different urdf models.  
 ```bash
 $python -m mujoco.viewer
 ```
-Can drag xml files in window to view the different urdf models  
   
-# Reinforcement learning #########################################################
+Keyboard control of Unitree G1 Robot. Can use after setting up.
+```bash
+python keyboard_g1.py
+```
+  
+# Reinforcement learning  
 https://github.com/unitreerobotics/unitree_rl_gym  
-Follow Setup commands:  
-https://github.com/unitreerobotics/unitree_rl_gym/blob/main/doc/setup_en.md  
 ```bash
 conda activate unitree-rl
 ```
