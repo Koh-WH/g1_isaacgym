@@ -1,3 +1,74 @@
+```bash
+$python -m mujoco.viewer
+```
+Can drag xml files in window to view the different urdf models  
+  
+# Reinforcement learning #########################################################
+https://github.com/unitreerobotics/unitree_rl_gym  
+Follow Setup commands:  
+https://github.com/unitreerobotics/unitree_rl_gym/blob/main/doc/setup_en.md  
+```bash
+conda activate unitree-rl
+```
+```bash
+cd Downloads/isaacgym_/unitree_rl_gym
+```
+  
+## Train:
+```bash
+python legged_gym/scripts/train.py --task=g1 --headless --num_envs=512 --max_iterations=1000 --experiment_name=g1_walking_test --run_name=iterations1000
+```
+  
+## Play:
+```bash
+python legged_gym/scripts/play.py --task=g1 --experiment_name=g1_walking_test --load_run={Run_name} --num_envs=32
+```
+  
+## Sim-to-Sim:
+Under '/Downloads/isaacgym_/unitree_rl_gym/deploy/deploy_mujoco/configs/g1.yaml'  
+Change policy path to new model and run:  
+```bash
+python deploy/deploy_mujoco/deploy_mujoco.py g1.yaml
+```
+
+If above don't work do:  
+Create the dri directory that MuJoCo is looking for & Link existing libraries to that location:  
+```bash
+sudo mkdir -p /usr/lib/dri  
+sudo ln -sf /usr/lib/x86_64-linux-gnu/dri/* /usr/lib/dri/  
+```
+Check available GLIBCXX versions & Install updated libstdc++ in conda:  
+```bash
+strings /usr/lib/x86_64-linux-gnu/libstdc++.so.6 | grep GLIBCXX
+conda install -c conda-forge libstdcxx-ng
+conda update libgcc
+```
+Run:  
+```bash
+__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia python deploy/deploy_mujoco/deploy_mujoco.py g1.yaml
+``` 
+Using this:( $__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia <app>)  
+  
+## Sim-to-Real:
+  
+## Other Behaviours:
+-Go to $cd ~/Downloads/isaacgym_/unitree_rl_gym/legged_gym/envs/  
+-Create new "config" and "env" scripts for particular action.  
+-Include in "init.py"  
+-Run Train and the rest.  
+
+Example g1_squat:  
+```bash
+python legged_gym/scripts/train.py --task=g1_squat --headless --num_envs=512 --max_iterations=2000 --experiment_name=g1_squat --run_name=iterations2000
+```
+```bash
+python legged_gym/scripts/play.py --task=g1_squat --experiment_name=g1_squat --load_run=it2000 --num_envs=32
+```
+```bash
+python deploy/deploy_mujoco/deploy_mujoco.py g1.yaml
+```
+-- 
+
 <div align="center">
   <h1 align="center">Unitree RL GYM</h1>
   <p align="center">
