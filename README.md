@@ -15,19 +15,16 @@ cd Downloads/isaacgym_/unitree_rl_gym
 ```
   
 ## Train:
----
 ```bash
 python legged_gym/scripts/train.py --task=g1 --headless --num_envs=512 --max_iterations=1000 --experiment_name=g1_walking_test --run_name=iterations1000
 ```
   
 ## Play:
----
 ```bash
 python legged_gym/scripts/play.py --task=g1 --experiment_name=g1_walking_test --load_run={Run_name} --num_envs=32
 ```
   
 ## Sim-to-Sim:
----
 Under '/Downloads/isaacgym_/unitree_rl_gym/deploy/deploy_mujoco/configs/g1.yaml'  
 Change policy path to new model and run:  
 ```bash
@@ -54,10 +51,8 @@ __NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia python deploy/deplo
 Using this:( $__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia <app>)  
   
 ## Sim-to-Real:
----
   
 ## Other Behaviours:
----
 - Go to $cd ~/Downloads/isaacgym_/unitree_rl_gym/legged_gym/envs/  
 - Create new "config" and "env" scripts for particular action.  
 - Include in "init.py"  
