@@ -2,13 +2,13 @@
 https://github.com/Koh-WH/g1_isaacgym/blob/main/doc/setup_en.md  
   
 # Folder Structure  
-`
+```
 isaacgym_/
 ├── isaacgym/                
 ├── rsl_rl/   
 ├── unitree_rl_gym/              
 ├── unitree_sdk2_python/                    
-`
+```
   
 Can drag xml files in window to view the different urdf models.  
 ```bash
