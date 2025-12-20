@@ -31,7 +31,7 @@ Change policy path to new model and run:
 python deploy/deploy_mujoco/deploy_mujoco.py g1.yaml
 ```
 
-If above don't work do: 
+### If above don't work do: 
 --- 
 Create the dri directory that MuJoCo is looking for & Link existing libraries to that location:  
 ```bash
