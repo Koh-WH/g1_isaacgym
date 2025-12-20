@@ -9,10 +9,10 @@ isaacgym_/
 ├── unitree_rl_gym/              
 ├── unitree_sdk2_python/                    
 ```
-  
+
 Can drag xml files in window to view the different urdf models.  
 ```bash
-$python -m mujoco.viewer
+python -m mujoco.viewer
 ```
   
 Keyboard control of Unitree G1 Robot. Can use after setting up.
