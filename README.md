@@ -1,5 +1,8 @@
 # Follow Setup commands in doc  
 https://github.com/Koh-WH/g1_isaacgym/blob/main/doc/setup_en.md  
+[setup.md](/doc/setup_en.md)  
+[requirements.txt](/doc/requirements.txt)  
+[notes.md](/doc/notes.md)  
   
 # Folder Structure  
 ```

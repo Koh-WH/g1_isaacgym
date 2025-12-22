@@ -17,7 +17,9 @@ task_registry.register( "h1_2", H1_2Robot, H1_2RoughCfg(), H1_2RoughCfgPPO())
 task_registry.register( "g1", G1Robot, G1RoughCfg(), G1RoughCfgPPO())
 
 # Added
-from legged_gym.envs.g1.g1_standing_env import G1StandingEnv, G1StandingCfg, G1StandingCfgPPO
+from legged_gym.envs.g1.g1_standing_env import G1StandingEnv
+from legged_gym.envs.g1.g1_standing_config import G1StandingCfg, G1StandingCfgPPO
 task_registry.register( "g1_standing", G1StandingEnv, G1StandingCfg(), G1StandingCfgPPO())
-from legged_gym.envs.g1.g1_squat_env import G1SquatEnv, G1SquatCfg, G1SquatCfgPPO
-task_registry.register( "g1_squat", G1SquatEnv, G1SquatCfg(), G1SquatCfgPPO())
+from legged_gym.envs.g1.g1_squatting_config import G1SquattingCfg, G1SquattingCfgPPO
+from legged_gym.envs.g1.g1_squatting_env import G1SquattingEnv
+task_registry.register("g1_squatting", G1SquattingEnv, G1SquattingCfg, G1SquattingCfgPPO)
