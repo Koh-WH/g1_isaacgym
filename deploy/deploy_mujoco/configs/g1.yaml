@@ -1,4 +1,3 @@
-# 
 # policy_path: "{LEGGED_GYM_ROOT_DIR}/deploy/pre_train/g1/motion.pt"
 # policy_path: "logs/g1_walking_test/exported/policies/policy_lstm_1.pt" ### walking
 # policy_path: "logs/g1_standing/exported/policies/policy_lstm_1.pt" ### standing
