@@ -78,15 +78,28 @@ Using this:( $__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia <app>
 
 Example g1_squat:  
 ```bash
-python legged_gym/scripts/train.py --task=g1_squat --headless --num_envs=512 --max_iterations=2000 --experiment_name=g1_squat --run_name=iterations2000
+python legged_gym/scripts/train.py --task=g1_squatting --headless --num_envs=512 --max_iterations=2000 --experiment_name=g1_squatting --run_name=iterations
 ```
 ```bash
-python legged_gym/scripts/play.py --task=g1_squat --experiment_name=g1_squat --load_run=it2000 --num_envs=32
+python legged_gym/scripts/play.py --task=g1_squatting --experiment_name=g1_squatting --load_run=it2000 --num_envs=32
+```
+```bash
+python deploy/deploy_mujoco/deploy_mujoco.py g1.yaml
+```
+
+Example g1_standing still:  
+```bash
+python legged_gym/scripts/train.py --task=g1_standing --headless --num_envs=512 --max_iterations=2000 --experiment_name=g1_standing --run_name=iterations
+```
+```bash
+python legged_gym/scripts/play.py --task=g1_standing --experiment_name=g1_standing --load_run=it2000 --num_envs=32
 ```
 ```bash
 python deploy/deploy_mujoco/deploy_mujoco.py g1.yaml
 ```
 ---  
+# Unitree RL webpage
+
 
 <div align="center">
   <h1 align="center">Unitree RL GYM</h1>
