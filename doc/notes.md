@@ -143,6 +143,7 @@ Principle of optimality: An Optimal policy has the property that whatever the in
 With the Bellman optimality equation for q*, it is even easier to determine the optimal policy π*, since for each state s, one can simply find any action that maximizes q*(s, a).  
   
 Explicitly solving the Bellman optimality equation is one way of finding an optimal policy, but it is rarely practical since it requires an exhaustive search of all possibilities, computing their probabilities of occurrence and their desirabilities in terms of expected rewards. Most methods approximate solving the Bellman optimality equation using experienced transitions instead of knowledge of the expected transitions.  
+  
 ---
 ![alt text](image-4.png)   
   
@@ -205,10 +206,12 @@ MuZero - https://deepmind.google/discover/blog...
 DreamerV3 - https://danijar.com/project/dreamerv3/  
 Robot ball-in-a-cup - https://ieeexplore.ieee.org/abstract/...  
 Inverse Q-Learning - https://div99.github.io/IQ-Learn/  
+  
 ---
 # Inverse Reinforcement Learning
 Learn reward function from expert's trajectories of states and actions, and then learn policy from that.  
 Learn underlying goals instead of mimicking behaviour directly.  
+  
 ---
 # Imitation Learning
 Learn policy from expert's trajectories without reward signals.  

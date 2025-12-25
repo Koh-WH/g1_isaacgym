@@ -2,7 +2,7 @@
 # policy_path: "{LEGGED_GYM_ROOT_DIR}/deploy/pre_train/g1/motion.pt"
 # policy_path: "logs/g1_walking_test/exported/policies/policy_lstm_1.pt" ### walking
 # policy_path: "logs/g1_standing/exported/policies/policy_lstm_1.pt" ### standing
-policy_path: "logs/g1_squat/exported/policies/policy_lstm_1.pt" ### squat
+policy_path: "logs/g1_squatting/exported/policies/policy_lstm_1.pt" ### squat
 xml_path: "{LEGGED_GYM_ROOT_DIR}/resources/robots/g1_description/scene.xml"
 
 # Total simulation time
