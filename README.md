@@ -1,5 +1,4 @@
 # Follow Setup commands in doc  
-https://github.com/Koh-WH/g1_isaacgym/blob/main/doc/setup_en.md  
 [setup.md](/doc/setup_en.md)  
 [requirements.txt](/doc/requirements.txt)  
 [notes.md](/doc/notes.md)  
@@ -99,3 +98,16 @@ python legged_gym/scripts/play.py --task=g1_standing --experiment_name=g1_standi
 python deploy/deploy_mujoco/deploy_mujoco.py g1.yaml
 ```
 ---  
+
+## Install unitree-rl environment 
+### Navigate to folder with the envrionment file 
+conda env create -f environment.yml  
+### 1. Install Isaac Gym
+cd isaacgym/python  
+pip install -e .  
+### 2. Install RSL_RL (The reinforcement learning library)
+cd ../../rsl_rl  
+pip install -e .  
+### 3. Install Unitree RL Gym (The robot-specific training code)
+cd ../unitree_rl_gym  
+pip install -e .  
