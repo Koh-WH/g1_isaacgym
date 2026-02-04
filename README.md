@@ -1,5 +1,6 @@
 # Follow Setup commands in doc  
 [setup.md](/doc/setup_en.md)  
+[This git setup](#Install-unitree-rl-environment)  
 [requirements.txt](/doc/requirements.txt)  
 [notes.md](/doc/notes.md)  
   
@@ -11,18 +12,28 @@ isaacgym_/
 ├── unitree_rl_gym/              
 ├── unitree_sdk2_python/                    
 ```
-
-Can drag xml files in window to view the different urdf models.  
+# Table of Contents
+* [ModelViewer](#ModelViewer)  
+* [Keyboard control](#Keyboard-control)  
+* [Reinforcementlearning 12 DOF](#Reinforcement-learning)  
+* [Other 12 DOF Behaviours](#Other-Behaviours)  
+* [Reinforcement learning 29 DOF](#29-DOF)  
+---  
+## ModelViewer:  
+Can drag xml files in window to view the different urdf models in either mujoco or isaacgym.    
 ```bash
 python -m mujoco.viewer
 ```
-  
-Keyboard control of Unitree G1 Robot. Can use after setting up.
+```bash
+python legged_gym/envs/g1/default_visualise.py
+```
+## Keyboard control:  
+Keyboard control of Unitree G1 Robot. Can use after setting up.  
 ```bash
 python keyboard_g1.py
 ```
   
-# Reinforcement learning  
+## Reinforcement learning:  
 https://github.com/unitreerobotics/unitree_rl_gym  
 [Readme(unitree).md](/doc/Readme(unitree).md)  
 ```bash
@@ -31,18 +42,18 @@ conda activate unitree-rl
 ```bash
 cd Downloads/isaacgym_/unitree_rl_gym
 ```
-  
-## Train:
+---  
+### Train (12 DOF):
 ```bash
 python legged_gym/scripts/train.py --task=g1 --headless --num_envs=512 --max_iterations=1000 --experiment_name=g1_walking_test --run_name=iterations1000
 ```
   
-## Play:
+### Play:
 ```bash
 python legged_gym/scripts/play.py --task=g1 --experiment_name=g1_walking_test --load_run={Run_name} --num_envs=32
 ```
   
-## Sim-to-Sim:
+### Sim-to-Sim:
 Under '/Downloads/isaacgym_/unitree_rl_gym/deploy/deploy_mujoco/configs/g1.yaml'  
 Change policy path to new model and run:  
 ```bash
@@ -50,7 +61,6 @@ python deploy/deploy_mujoco/deploy_mujoco.py g1.yaml
 ```
 
 ### If above don't work do: 
---- 
 Create the dri directory that MuJoCo is looking for & Link existing libraries to that location:  
 ```bash
 sudo mkdir -p /usr/lib/dri  
@@ -68,9 +78,10 @@ __NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia python deploy/deplo
 ``` 
 Using this:( $__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia <app>)  
   
-## Sim-to-Real:
+### Sim-to-Real:  
+- Not Done -  
   
-## Other Behaviours:
+## Other Behaviours:  
 - Go to $cd ~/Downloads/isaacgym_/unitree_rl_gym/legged_gym/envs/  
 - Create new "config" and "env" scripts for particular action.  
 - Include in "init.py"  
@@ -83,10 +94,6 @@ python legged_gym/scripts/train.py --task=g1_squatting --headless --num_envs=512
 ```bash
 python legged_gym/scripts/play.py --task=g1_squatting --experiment_name=g1_squatting --load_run=it2000 --num_envs=32
 ```
-```bash
-python deploy/deploy_mujoco/deploy_mujoco.py g1.yaml
-```
-
 Example g1_standing still:  
 ```bash
 python legged_gym/scripts/train.py --task=g1_standing --headless --num_envs=512 --max_iterations=2000 --experiment_name=g1_standing --run_name=iterations
@@ -94,11 +101,18 @@ python legged_gym/scripts/train.py --task=g1_standing --headless --num_envs=512 
 ```bash
 python legged_gym/scripts/play.py --task=g1_standing --experiment_name=g1_standing --load_run=it2000 --num_envs=32
 ```
-```bash
-python deploy/deploy_mujoco/deploy_mujoco.py g1.yaml
-```
 ---  
-
+## 29 DOF:  
+Train 2000 iterations of each (G1_1 to G1_5). Reference to 'g129_1_env.py' for the reward functions.  
+```bash
+python legged_gym/scripts/train.py --task=g1_1 --headless --num_envs=512 --max_iterations=2000 --experiment_name=g1_1 --run_name=iterations
+```
+```bash
+python legged_gym/scripts/train.py --task=g1_2 --headless --num_envs=512 --max_iterations=3000 --experiment_name=g1_1 --run_name=iterations --resume --load_run=/home/koh-wh/Downloads/isaacgym_/unitree_rl_gym/logs/g1_1/{run_name}
+```
+Continue until G1_5.  
+  
+---  
 ## Install unitree-rl environment 
 ### Navigate to folder with the envrionment file 
 conda env create -f environment.yml  

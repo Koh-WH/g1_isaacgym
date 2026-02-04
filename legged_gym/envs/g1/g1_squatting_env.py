@@ -1,18 +1,15 @@
 from legged_gym.envs.base.legged_robot import LeggedRobot
-# FIXED: Pointing to the specific G1 env location
 from legged_gym.envs.g1.g1_env import G1Robot
 from isaacgym.torch_utils import *
 import torch
 import numpy as np
 
-# RENAMED: Class name now matches your __init__.py 'G1SquattingEnv'
 class G1SquattingEnv(G1Robot):
     
     def _post_physics_step_callback(self):
         # Run parent logic first (updates feet state, checks termination)
         super()._post_physics_step_callback()
 
-        # --- Overwrite Phase logic for Squatting ---
         # Slower period for squatting stability (e.g., 2.0s period)
         period = 1.0 / self.cfg.rewards.squat_freq
         self.phase = (self.episode_length_buf * self.dt) % period / period

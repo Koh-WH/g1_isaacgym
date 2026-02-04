@@ -1,25 +1,20 @@
-"""
-G1 Standing Environment - Improved Version
-Save as: legged_gym/envs/g1/g1_standing_env.py
-"""
 
 import torch
 from legged_gym.envs.g1.g1_env import G1Robot
-from legged_gym.envs.g1.g1_standing_config import G1StandingCfg, G1StandingCfgPPO
 
 class G1StandingEnv(G1Robot):
     """Environment for training G1 to stand still and maintain balance"""
     
-    cfg: G1StandingCfg
-    
     def __init__(self, cfg, sim_params, physics_engine, sim_device, headless):
         super().__init__(cfg, sim_params, physics_engine, sim_device, headless)
-        
         # Store default joint positions for reward calculation
-        # After super().__init__(), self.default_dof_pos is already set by base class
-        # We'll save it for our custom reward
         self.standing_default_dof_pos = self.default_dof_pos.clone()
     
+    def _init_buffers(self):
+        super()._init_buffers()
+        # FIX: Initialize the buffer here to avoid "graph" errors during reward calculation
+        self.last_base_ang_vel = torch.zeros_like(self.base_ang_vel)
+
     def _resample_commands(self, env_ids):
         """Override to disable command resampling for standing task"""
         if len(env_ids) > 0 and self.cfg.commands.num_commands > 0:
@@ -69,13 +64,8 @@ class G1StandingEnv(G1Robot):
     
     def _reward_feet_contact(self):
         """Reward for keeping both feet in contact with ground"""
-        # Assuming feet are the last two bodies in contact sensor
-        # Adjust indices based on your robot's contact sensor setup
-        # This is a simplified version - adjust based on your contact sensor setup
-        contact_forces = self.contact_forces[:, self.feet_indices, 2]  # Z-forces
-        
         # Reward when feet have contact (force > threshold)
-        feet_in_contact = (contact_forces > 1.0).float()
+        feet_in_contact = (self.contact_forces[:, self.feet_indices, 2] > 1.0).float()
         # Return average contact across both feet
         return feet_in_contact.mean(dim=1)
     
@@ -109,14 +99,7 @@ class G1StandingEnv(G1Robot):
     
     def _reward_base_ang_acc(self):
         """Penalize angular acceleration (rotational jerking)"""
-        if not hasattr(self, 'last_base_ang_vel'):
-            self.last_base_ang_vel = self.base_ang_vel.clone()
-            return torch.zeros(self.num_envs, device=self.device)
-        
+        # FIX: Use the buffer initialized in _init_buffers
         ang_acc = torch.norm(self.base_ang_vel - self.last_base_ang_vel, dim=1) / self.dt
-        self.last_base_ang_vel = self.base_ang_vel.clone()
+        self.last_base_ang_vel[:] = self.base_ang_vel
         return ang_acc
-    
-    # Other reward functions (lin_vel_z, ang_vel_xy, dof_vel, dof_acc, 
-    # action_rate, dof_pos_limits, collision, hip_pos) are inherited 
-    # from G1Robot and LeggedRobot base classes

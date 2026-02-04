@@ -21,3 +21,4 @@ dependencies:
       - scipy
       - tensorboard
       - pyyaml
+      - h5py

@@ -1,8 +1,3 @@
-"""
-G1 Standing Task Configuration - Balanced Version v3
-Save as: legged_gym/envs/g1/g1_standing_config.py
-"""
-
 from legged_gym.envs.g1.g1_config import G1RoughCfg, G1RoughCfgPPO
 
 class G1StandingCfg(G1RoughCfg):
@@ -10,35 +5,61 @@ class G1StandingCfg(G1RoughCfg):
     
     class env(G1RoughCfg.env):
         num_envs = 512
-        episode_length_s = 20
-        num_observations = 47
+        episode_length_s = 60.0
+        num_observations = 47 
         num_privileged_obs = 50
         num_actions = 12
-    
+
+    class sim(G1RoughCfg.sim):
+        dt = 0.002
+
     class terrain(G1RoughCfg.terrain):
         mesh_type = 'plane'
         measure_heights = False
-    
+
     class commands(G1RoughCfg.commands):
         curriculum = False
-        num_commands = 4
+        num_commands = 4 
         
         class ranges:
-            lin_vel_x = [0.0, 0.0]
+            lin_vel_x = [0.5, 0.5]
             lin_vel_y = [0.0, 0.0]
             ang_vel_yaw = [0.0, 0.0]
-            heading = [0.0, 0.0]
+            heading = [0.0, 0.0]    
     
     class init_state(G1RoughCfg.init_state):
-        pos = [0.0, 0.0, 0.78]
-        # Keep default joint positions from base config
+        pos = [0.0, 0.0, 1.0] 
+        default_joint_angles = {
+            'left_hip_pitch_joint': -0.1,
+            'left_hip_roll_joint': 0.0, 
+            'left_hip_yaw_joint': 0.0,
+            'left_knee_joint': 0.3,
+            'left_ankle_pitch_joint': -0.2,
+            'left_ankle_roll_joint': 0.0,
+            
+            'right_hip_pitch_joint': -0.1,
+            'right_hip_roll_joint': 0.0, 
+            'right_hip_yaw_joint': 0.0,
+            'right_knee_joint': 0.3,
+            'right_ankle_pitch_joint': -0.2,
+            'right_ankle_roll_joint': 0.0,
+        }
     
     class control(G1RoughCfg.control):
-        # Balanced control - not too stiff, not too loose
-        stiffness = {'joint': 60.0}   # Moderate stiffness
-        damping = {'joint': 2.0}      # Moderate damping
-        action_scale = 0.5            # Allow reasonable action range
-    
+        decimation = 10
+        action_scale = 0.25
+
+        stiffness = {
+            'hip': 100.0, 
+            'knee': 150.0, 
+            'ankle': 40.0
+        }
+        damping = {
+            'hip': 2.0, 
+            'knee': 4.0, 
+            'ankle': 2.0
+        }
+
     class asset(G1RoughCfg.asset):
         pass
     
@@ -47,92 +68,73 @@ class G1StandingCfg(G1RoughCfg):
         base_height_target = 0.78
         only_positive_rewards = False
         
-        # Standing task parameters - reasonable tolerances for learning
         target_height = 0.78
-        height_tolerance = 0.04        # Reasonable tolerance
-        orientation_tolerance = 0.2    # ~11.5 degrees - learnable
-        velocity_tolerance = 0.1       # Allow some movement for balance
-        joint_pos_tolerance = 0.15     # Allow joint movement for balance
+        height_tolerance = 0.04
+        orientation_tolerance = 0.2
+        velocity_tolerance = 0.3
+        joint_pos_tolerance = 0.8
         
         class scales(G1RoughCfg.rewards.scales):
-            # === PHASE 1: Learn to not fall (most important) ===
-            alive = 2.0                    # Strong reward for staying upright
-            termination = -2.0             # Strong penalty for falling
+            alive = 2.0
+            termination = -2.0
+            orientation_upright = 5.0
+            base_height = 3.0
             
-            # === PHASE 2: Maintain upright posture ===
-            orientation_upright = 5.0      # Reward staying upright
-            base_height = 3.0              # Reward correct height
+            base_lin_vel_xy = 5.0
+            base_ang_vel_xy = 2.0
+            base_ang_vel_z = 1.0
             
-            # === PHASE 3: Minimize unnecessary movement ===
-            base_lin_vel_xy = 1.5          # Prefer staying still
-            base_ang_vel_xy = 1.0          # Prefer no rotation
-            base_ang_vel_z = 0.5           # Prefer no yaw rotation
-            
-            # Joint stability (but allow balancing movements)
-            default_joint_pos = 0.5        # Gentle preference for default pose
-            
-            # Feet should stay on ground
+            default_joint_pos = 2.0
             feet_contact = 1.5
+            action_rate = -0.2
+            dof_vel = -0.05
+            torques = -1e-5
             
-            # === SMOOTHNESS (secondary priority) ===
-            action_rate = -0.01            # Gentle smoothness preference
-            dof_vel = -5e-4                # Allow joint movement for balance
-            torques = -1e-5                # Allow torques for balance
-            
-            # === DISABLE LOCOMOTION ===
             tracking_lin_vel = 0.0
             tracking_ang_vel = 0.0
             feet_air_time = 0.0
             feet_swing_height = 0.0
             
-            # === SAFETY PENALTIES (moderate) ===
-            lin_vel_z = -2.0               # Penalize bouncing
-            ang_vel_xy = -0.2              # Gentle penalty for tilt velocity
-            dof_acc = -2.5e-7              # Gentle smoothness
-            dof_pos_limits = -10.0         # Strong penalty near limits
+            lin_vel_z = -2.0
+            ang_vel_xy = -0.2
+            dof_acc = -2.5e-7
+            dof_pos_limits = -10.0
             collision = -1.0
             hip_pos = -0.5
             
-            # Disabled
             contact = 0.0
             contact_no_vel = 0.0
     
     class domain_rand(G1RoughCfg.domain_rand):
-        # Start with minimal randomization, increase as training progresses
-        randomize_friction = True
-        friction_range = [0.6, 1.2]
-        
-        randomize_base_mass = True
-        added_mass_range = [-0.5, 1.0]
-        
-        push_robots = True
-        push_interval_s = 15           # Infrequent pushes initially
-        max_push_vel_xy = 0.2          # Very gentle pushes
-        
-        randomize_gains = False        # Disable initially for easier learning
-        stiffness_multiplier_range = [0.9, 1.1]
-        damping_multiplier_range = [0.9, 1.1]
-        
-        randomize_base_com = False     # Disable for easier learning
+            randomize_friction = True
+            friction_range = [0.2, 1.5]
+            randomize_base_mass = True
+            added_mass_range = [-1.0, 5.0] 
+            push_robots = True
+            push_interval_s = 5
+            max_push_vel_xy = 1.0
+            randomize_gains = False         
+            stiffness_multiplier_range = [0.8, 1.2]
+            damping_multiplier_range = [0.8, 1.2]
+            randomize_base_com = False     
+            added_com_range = [-0.2, 0.2]
     
     class normalization(G1RoughCfg.normalization):
         class obs_scales(G1RoughCfg.normalization.obs_scales):
-            lin_vel = 2.0      # Keep default scaling
+            lin_vel = 2.0
             ang_vel = 0.25
             dof_pos = 1.0
             dof_vel = 0.05
     
     class noise(G1RoughCfg.noise):
         add_noise = True
-        noise_level = 0.5  # Moderate noise
+        noise_level = 0.5
 
 
 class G1StandingCfgPPO(G1RoughCfgPPO):
-    """PPO config for standing task"""
-    
     class policy(G1RoughCfgPPO.policy):
-        init_noise_std = 1.0           # Higher exploration initially
-        actor_hidden_dims = [128, 64]  # Simpler network learns basics faster
+        init_noise_std = 1.0
+        actor_hidden_dims = [128, 64]
         critic_hidden_dims = [128, 64]
         activation = 'elu'
         
@@ -145,10 +147,12 @@ class G1StandingCfgPPO(G1RoughCfgPPO):
         value_loss_coef = 1.0
         use_clipped_value_loss = True
         clip_param = 0.2
-        entropy_coef = 0.01            # Encourage exploration
+        entropy_coef = 0.01
         num_learning_epochs = 5
-        num_mini_batches = 4
-        learning_rate = 3e-4           # Standard learning rate
+        
+        num_mini_batches = 4 
+        
+        learning_rate = 3e-4
         schedule = 'adaptive'
         gamma = 0.99
         lam = 0.95
@@ -158,16 +162,15 @@ class G1StandingCfgPPO(G1RoughCfgPPO):
     class runner(G1RoughCfgPPO.runner):
         policy_class_name = "ActorCriticRecurrent"
         algorithm_class_name = 'PPO'
+        
         num_steps_per_env = 24
+        
         max_iterations = 3000
         run_name = 'standing'
         experiment_name = 'g1_standing'
         
-        # Logging and saving
         save_interval = 100
         log_interval = 10
-        
-        # Load checkpoint if resuming
         resume = False
         load_run = -1
         checkpoint = -1

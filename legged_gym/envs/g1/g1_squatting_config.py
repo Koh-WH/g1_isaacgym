@@ -1,5 +1,4 @@
 from legged_gym.envs.base.legged_robot_config import LeggedRobotCfg, LeggedRobotCfgPPO
-# FIXED: Pointing to the specific G1 config location
 from legged_gym.envs.g1.g1_config import G1RoughCfg, G1RoughCfgPPO
 
 class G1SquattingCfg(G1RoughCfg):
