@@ -1,9 +1,3 @@
-# Follow Setup commands in doc  
-[setup.md](/doc/setup_en.md)  
-[This git setup](#Install-unitree-rl-environment)  
-[requirements.txt](/doc/requirements.txt)  
-[notes.md](/doc/notes.md)  
-  
 # Folder Structure  
 ```
 isaacgym_/
@@ -15,7 +9,7 @@ isaacgym_/
 # Table of Contents
 * [ModelViewer](#ModelViewer)  
 * [Keyboard control](#Keyboard-control)  
-* [Reinforcementlearning 12 DOF](#Reinforcement-learning)  
+* [Reinforcementlearning 12 DOF Setup](#Reinforcement-learning)  
 * [Other 12 DOF Behaviours](#Other-Behaviours)  
 * [Reinforcement learning 29 DOF](#29-DOF)  
 ---  
@@ -35,7 +29,14 @@ python keyboard_g1.py
   
 ## Reinforcement learning:  
 https://github.com/unitreerobotics/unitree_rl_gym  
-[Readme(unitree).md](/doc/Readme(unitree).md)  
+[Readme(unitree).md](/doc/Readme(unitree).md)
+
+### Follow Setup commands in doc  
+[setup.md](/doc/setup_en.md)  
+[This git setup](#Install-unitree-rl-environment)  
+[requirements.txt](/doc/requirements.txt)  
+[notes.md](/doc/notes.md) 
+
 ```bash
 conda activate unitree-rl
 ```
@@ -96,10 +97,10 @@ python legged_gym/scripts/play.py --task=g1_squatting --experiment_name=g1_squat
 ```
 Example g1_standing still:  
 ```bash
-python legged_gym/scripts/train.py --task=g1_standing --headless --num_envs=512 --max_iterations=2000 --experiment_name=g1_standing --run_name=iterations
+python legged_gym/scripts/train.py --task=g1_standing --headless --num_envs=512 --max_iterations=1000 --experiment_name=g1_standing --run_name=iterations
 ```
 ```bash
-python legged_gym/scripts/play.py --task=g1_standing --experiment_name=g1_standing --load_run=it2000 --num_envs=32
+python legged_gym/scripts/play.py --task=g1_standing --experiment_name=g1_standing --load_run=1000 --num_envs=32
 ```
 ---  
 ## 29 DOF:  
