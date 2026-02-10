@@ -21,22 +21,26 @@ python -m mujoco.viewer
 ```bash
 python legged_gym/envs/g1/default_visualise.py
 ```
+  
 ## Keyboard control:  
 Keyboard control of Unitree G1 Robot. Can use after setting up.  
 ```bash
 python keyboard_g1.py
 ```
+```bash
+python keyboard_g1_policy.py --robot={Model_Path} --policy={Policy_Path}
+```
   
 ## Reinforcement learning:  
 https://github.com/unitreerobotics/unitree_rl_gym  
 [Readme(unitree).md](/doc/Readme(unitree).md)
-
+  
 ### Follow Setup commands in doc  
 [setup.md](/doc/setup_en.md)  
 [This git setup](#Install-unitree-rl-environment)  
 [requirements.txt](/doc/requirements.txt)  
 [notes.md](/doc/notes.md) 
-
+  
 ```bash
 conda activate unitree-rl
 ```
@@ -60,7 +64,7 @@ Change policy path to new model and run:
 ```bash
 python deploy/deploy_mujoco/deploy_mujoco.py g1.yaml
 ```
-
+  
 ### If above don't work do: 
 Create the dri directory that MuJoCo is looking for & Link existing libraries to that location:  
 ```bash
@@ -87,7 +91,7 @@ Using this:( $__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia <app>
 - Create new "config" and "env" scripts for particular action.  
 - Include in "init.py"  
 - Run Train and the rest.  
-
+  
 Example g1_squat:  
 ```bash
 python legged_gym/scripts/train.py --task=g1_squatting --headless --num_envs=512 --max_iterations=2000 --experiment_name=g1_squatting --run_name=iterations
